@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<!-- Message IDs from 12000 to 12999 -->
+
+<mavlink>
+
+    <include>ardupilotmega.xml</include>
+
+    <dialect>8</dialect>
+
+    <enums>
+      <enum name="SENDER_ID">
+        <description>Hello World message sender type</description>
+        <entry value="0" name="SENDER_ID_GCS">
+          <description>GCS is the sender</description>
+        </entry>
+        <entry value="1" name="SENDER_ID_RPI">
+          <description>RPI is the sender</description>
+        </entry>
+      </enum>
+    </enums>
+
+    <messages>
+      <message id="12000" name="HELLO_WORLD">
+        <description>Hello World message</description>
+        <field type="uint8_t" name="sender_id" enum="SENDER_ID">sender id</field>
+        <field type="char[10]" name="sender_name">sender name</field>
+        <field type="uint32_t" name="sequence">the sequence of the message</field>
+      </message>
+    </messages>
+
+</mavlink>
+
+
+
