@@ -27,6 +27,15 @@
         <field type="char[10]" name="sender_name">sender name</field>
         <field type="uint32_t" name="sequence">the sequence of the message</field>
       </message>
+      <message id="12001" name="COMMAND_RESPONSE">
+        <description>Message for sending command results back from the RPI, Inspired by COMMAND_ACK</description>
+        <field type="uint16_t" name="command">ID of the command to be responsed.</field>
+        <field type="uint8_t" name="result" enum="MAV_RESULT">Result of the command execution.</field>
+        <field type="uint8_t" name="progress">Percentage of the execution of commands taking noticable time.</field>
+        <field type="uint8_t" name="target_system">ID of the system to send message</field>
+        <field type="uint8_t" name="target_component">ID of the component to send message</field>
+        <field type="uint16_t" name="request_number">A number to assign the command and its response to eachother</field>
+      </message>
     </messages>
 
 </mavlink>
