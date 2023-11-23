@@ -36,6 +36,18 @@
         <field type="uint8_t" name="target_component">ID of the component to send message</field>
         <field type="uint16_t" name="request_number">A number to assign the command and its response to eachother</field>
       </message>
+      <message id="12002" name="VIRTUAL_TARGET_GLOBAL_POSITION_INT">
+        <description>The global position of the virtual target in funnywing simpleTracker.</description>
+        <field type="uint32_t" name="time_boot_ms" units="ms">Timestamp (time since system boot). The rationale for the timestamp in the setpoint is to allow the system to compensate for the transport delay of the setpoint. This allows the system to compensate processing latency.</field>
+        <field type="uint8_t" name="coordinate_frame" enum="MAV_FRAME">Valid options are: MAV_FRAME_GLOBAL_INT = 5, MAV_FRAME_GLOBAL_RELATIVE_ALT_INT = 6, MAV_FRAME_GLOBAL_TERRAIN_ALT_INT = 11</field>
+        <field type="uint16_t" name="type_mask" enum="POSITION_TARGET_TYPEMASK" display="bitmask">Bitmap to indicate which dimensions should be ignored by the vehicle.</field>
+        <field type="int32_t" name="lat_int" units="degE7">X Position in WGS84 frame</field>
+        <field type="int32_t" name="lon_int" units="degE7">Y Position in WGS84 frame</field>
+        <field type="float" name="alt" units="m">Altitude (MSL, AGL or relative to home altitude, depending on frame)</field>
+        <field type="float" name="vx" units="m/s">X velocity in NED frame</field>
+        <field type="float" name="vy" units="m/s">Y velocity in NED frame</field>
+        <field type="float" name="vz" units="m/s">Z velocity in NED frame</field>
+      </message>
     </messages>
 
 </mavlink>
