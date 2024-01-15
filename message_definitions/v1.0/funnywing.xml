@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
 <!-- MAVLink v1.0 Message IDs from free IDs in range 180 to 229 -->
+<!-- MAVLink v1.0 Command IDs from free IDs in range 12000 to 12999 -->
 
 <mavlink>
 
@@ -18,6 +19,29 @@
           <description>RPI is the sender</description>
         </entry>
       </enum>
+      <enum name="RESCUE_STATE">
+        <description>The state of the rescue code that whether it is active or not.</description>
+        <entry value="0" name="RESCUE_DISABLED">
+          <description>Rescue code is disabled.</description>
+        </entry>
+        <entry value="1" name="RESCUE_ENABLED">
+          <description>Rescue code is enabled.</description>
+        </entry>
+      </enum>
+
+      <!-- <enum name="MAV_CMD">
+        <description>Commands to be executed by the MAV. They can be executed on user request, or as part of a mission script. If the action is used in a mission, the parameter mapping to the waypoint/mission message is as follows: Param 1, Param 2, Param 3, Param 4, X: Param 5, Y:Param 6, Z:Param 7. This command list is similar what ARINC 424 is for commercial aircraft: A data format how to interpret waypoint/mission data. NaN and INT32_MAX may be used in float/integer params (respectively) to indicate optional/default values (e.g. to use the component's current yaw or latitude rather than a specific value). See https://mavlink.io/en/guide/xml_schema.html#MAV_CMD for information about the structure of the MAV_CMD entries</description>
+        <entry value="12000" name="RESCUE_SET_STATE" hasLocation="false" isDestination="false">
+          <description>Sets the states of the rescue code, dis/enabled.</description>
+          <param index="1" label="rescue_state" enum="RESCUE_STATE" default="RESCUE_DISABLED">The state must be set in the RPI side.</param>
+          <param index="2">Empty</param>
+          <param index="3">Empty</param>
+          <param index="4">Empty</param>
+          <param index="5">Empty</param>
+          <param index="6">Empty</param>
+          <param index="7">Empty</param>
+        </entry>
+      </enum> -->
     </enums>
 
     <messages>
@@ -47,6 +71,14 @@
         <field type="float" name="vx" units="m/s">X velocity in NED frame</field>
         <field type="float" name="vy" units="m/s">Y velocity in NED frame</field>
         <field type="float" name="vz" units="m/s">Z velocity in NED frame</field>
+      </message>
+      <message id="190" name="RESCUE_STATUS">
+        <description>A message for sending information to GCS about whether the rescue system is active or not.</description>
+        <field type="uint8_t" name="rescue_state" enum="RESCUE_STATE">This field is used in monitoring to find that whether the rescue code is enabled or disabled.</field>
+      </message>
+      <message id="196" name="RESCUE_SET_STATE">
+        <description>Sets the states of the rescue code, dis/enabled. not defined in commands, since it the job defined in the RfConnection library of funnywing sends commands automatically to the autopilot and changing that code makes it complex. So defined in messages.</description>
+        <field type="uint8_t" name="rescue_state" enum="RESCUE_STATE">The state must be set in the RPI side.</field>
       </message>
     </messages>
 
