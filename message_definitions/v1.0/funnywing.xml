@@ -29,6 +29,19 @@
         </entry>
       </enum>
 
+      <enum name="FUNNYWING_CUSTOM_CMD">
+        <description>IDs of the custom commands for funnywing system.</description>
+        <entry value="0" name="SET_SIMPLE_TRACKER_SETTINGS">
+          <description>Sets the settings like virtual offset and virtual center for the simple tracker algorithm.</description>
+        </entry>
+        <entry value="1" name="SET_SIMPLE_TRACKER_ACTIVATION">
+          <description>Active and deactive the simple tracker algorithm on the RPI side.</description>
+        </entry>
+        <entry value="2" name="SET_TEST_SCENARIO_ACTIVATION">
+          <description>Active and deactive the test scenario code on the RPI side.</description>
+        </entry>
+      </enum>
+
       <!-- <enum name="MAV_CMD">
         <description>Commands to be executed by the MAV. They can be executed on user request, or as part of a mission script. If the action is used in a mission, the parameter mapping to the waypoint/mission message is as follows: Param 1, Param 2, Param 3, Param 4, X: Param 5, Y:Param 6, Z:Param 7. This command list is similar what ARINC 424 is for commercial aircraft: A data format how to interpret waypoint/mission data. NaN and INT32_MAX may be used in float/integer params (respectively) to indicate optional/default values (e.g. to use the component's current yaw or latitude rather than a specific value). See https://mavlink.io/en/guide/xml_schema.html#MAV_CMD for information about the structure of the MAV_CMD entries</description>
         <entry value="12000" name="RESCUE_SET_STATE" hasLocation="false" isDestination="false">
@@ -79,6 +92,15 @@
       <message id="196" name="RESCUE_SET_STATE">
         <description>Sets the states of the rescue code, dis/enabled. not defined in commands, since it the job defined in the RfConnection library of funnywing sends commands automatically to the autopilot and changing that code makes it complex. So defined in messages.</description>
         <field type="uint8_t" name="rescue_state" enum="RESCUE_STATE">The state must be set in the RPI side.</field>
+      </message>
+      <message id="197" name="FUNNYWING_CUSTOM_COMMAND">
+        <description>A message for sending funnywing custom commands, specially from GUI to the RPI side. This is for turning around the limiting of mavlink1 message ids and the fact that COMMAND_LONG/INT's jobs are preventing from using custom commands(actually commands are automatically sent to the autopilot and so we can't use them.).</description>
+        <field type="uint8_t" name="target_system">System which should execute the command</field>
+        <field type="uint8_t" name="target_component">Component which should execute the command, 0 for all components</field>
+        <field type="uint16_t" name="command" enum="FUNNYWING_CUSTOM_CMD">Command ID (of custom command to send).</field>
+        <field type="int32_t[5]" name="int_params">List of integer parameters of the command.</field>
+        <field type="uint8_t[5]" name="bool_params">List of boolean parameters of the command.</field>
+        <field type="float[5]" name="float_params">List of float parameters of the command.</field>
       </message>
     </messages>
 
