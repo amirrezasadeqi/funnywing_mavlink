@@ -40,6 +40,9 @@
         <entry value="2" name="SET_TEST_SCENARIO_ACTIVATION">
           <description>Active and deactive the test scenario code on the RPI side.</description>
         </entry>
+        <entry value="3" name="SET_CAMERA_PRESET_INDEX">
+          <description>Changes the camera settings(usually, zoom and focus) to the values specified in the preset index of the camera preset table. In the funnywing project this index considered to be an integer value with [0-100] range.</description>
+        </entry>
       </enum>
 
       <!-- <enum name="MAV_CMD">
