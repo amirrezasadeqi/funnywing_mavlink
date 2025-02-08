@@ -28,6 +28,16 @@
           <description>Rescue code is enabled.</description>
         </entry>
       </enum>
+      <enum name="THROTTLE_PROFILE_TYPE">
+        <description>The throttle profile type used in the camera based guidance.</description>
+        <entry value="0" name="CONSTANT">
+          <description>This profile uses a constant throttle for the camera based guidance.</description>
+        </entry>
+        <entry value="1" name="CUSTOM_SIGMOID">
+          <description>A custom profile, using sigmoid function in its heart, used for the camera based guidance. For details, go through source code of the funnywing.</description>
+        </entry>
+      </enum>
+
 
       <enum name="FUNNYWING_CUSTOM_CMD">
         <description>IDs of the custom commands for funnywing system.</description>
@@ -42,6 +52,15 @@
         </entry>
         <entry value="3" name="SET_CAMERA_PRESET_INDEX">
           <description>Changes the camera settings(usually, zoom and focus) to the values specified in the preset index of the camera preset table. In the funnywing project this index considered to be an integer value with [0-100] range.</description>
+        </entry>
+        <entry value="4" name="GET_TRACK_INFO">
+          <description>Used for sending the states of a track determined by the tracker of the sensor block. For now, uisng FUNNYWING_CUSTOM_COMMAND, but in future we will use some kind of message like FUNNYWING_CUSTOM_MESSAGE.</description>
+        </entry>
+        <entry value="5" name="LOCK_ON_TRACK">
+          <description>Used for sending the command to lock on a track with specified track id or to unlock from the track that the sensor block is currently locked on it.</description>
+        </entry>
+        <entry value="6" name="SET_TRACKER_CONFIGS">
+          <description>Used for changing parameters and configurations of the tracker at run-time from GCS user interface.</description>
         </entry>
       </enum>
 
@@ -104,6 +123,21 @@
         <field type="int32_t[5]" name="int_params">List of integer parameters of the command.</field>
         <field type="uint8_t[5]" name="bool_params">List of boolean parameters of the command.</field>
         <field type="float[5]" name="float_params">List of float parameters of the command.</field>
+      </message>
+      <message id="198" name="SET_CAM_BASED_GUIDANCE_CONFIGS">
+        <description>This message is used for changing the camera based guidance parameters and configurations by GUI at run-time. Note that these configurations must be tuned in the reference zoom level of the camera or the errors feeding into them must be determined in the reference zoom level or converted into the corresponding errors in the reference zoom level.</description>
+        <field type="uint8_t" name="profile_type" enum="THROTTLE_PROFILE_TYPE">Defines the type of throttle profile used at the camera based guidance.</field>
+        <field type="float" name="const_throttle">Defines the constant value used in the constant throttle profile, range: [0, 1].</field>
+        <field type="float[3]" name="x_pids">PID constants of the camera based guidance in the x axis of the image.</field>
+        <field type="float[3]" name="y_pids">PID constants of the camera based guidance in the y axis of the image.</field>
+        <field type="float" name="a">Constant 'a' in the sigmoid profile.</field>
+        <field type="float" name="b">Constant 'b' in the sigmoid profile.</field>
+        <field type="float" name="wing_too_below_throttle">Constant [0, 1] value for throttle when we are in the near vicinity and too below of the funnypoint.</field>
+        <field type="float" name="wing_too_above_throttle">Constant [0, 1] value for throttle when we are in the near vicinity and too above of the funnypoint.</field>
+        <field type="float" name="wing_tg_at_same_level_throttle">Constant [0, 1] value for throttle when we are in the near vicinity and approximately at the same level with the funnypoint.</field>
+        <field type="uint16_t" name="size_threshold">A threshold in sigmoid profile for measuring how far we are from the funnypoint based on its size in the image.</field>
+        <field type="uint16_t" name="wing_too_below_threshold">A threshold in the number of pixels from reference image point(normally image center) specifying that we are too below of the funnypoint or not in the case, we are in the near vicinity of the funnypoint.</field>
+        <field type="uint16_t" name="wing_too_above_threshold">A threshold in the number of pixels from reference image point(normally image center) specifying that we are too above of the funnypoint or not in the case, we are in the near vicinity of the funnypoint.</field>
       </message>
     </messages>
 
