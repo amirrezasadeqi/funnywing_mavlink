@@ -37,6 +37,15 @@
           <description>A custom profile, using sigmoid function in its heart, used for the camera based guidance. For details, go through source code of the funnywing.</description>
         </entry>
       </enum>
+      <enum name="TRACK_STATE">
+        <description>The state of the track. At the moment used just for locked and unlocked states.</description>
+        <entry value="0" name="TRACK_STATE_UNLOCKED">
+          <description>The track is unlocked.</description>
+        </entry>
+        <entry value="1" name="TRACK_STATE_LOCKED">
+          <description>The track is locked on.</description>
+        </entry>
+      </enum>
 
 
       <enum name="FUNNYWING_CUSTOM_CMD">
@@ -53,13 +62,10 @@
         <entry value="3" name="SET_CAMERA_PRESET_INDEX">
           <description>Changes the camera settings(usually, zoom and focus) to the values specified in the preset index of the camera preset table. In the funnywing project this index considered to be an integer value with [0-100] range.</description>
         </entry>
-        <entry value="4" name="GET_TRACK_INFO">
-          <description>Used for sending the states of a track determined by the tracker of the sensor block. For now, uisng FUNNYWING_CUSTOM_COMMAND, but in future we will use some kind of message like FUNNYWING_CUSTOM_MESSAGE.</description>
-        </entry>
-        <entry value="5" name="LOCK_ON_TRACK">
+        <entry value="4" name="LOCK_ON_TRACK">
           <description>Used for sending the command to lock on a track with specified track id or to unlock from the track that the sensor block is currently locked on it.</description>
         </entry>
-        <entry value="6" name="SET_TRACKER_CONFIGS">
+        <entry value="5" name="SET_TRACKER_CONFIGS">
           <description>Used for changing parameters and configurations of the tracker at run-time from GCS user interface.</description>
         </entry>
       </enum>
@@ -138,6 +144,17 @@
         <field type="uint16_t" name="size_threshold">A threshold in sigmoid profile for measuring how far we are from the funnypoint based on its size in the image.</field>
         <field type="uint16_t" name="wing_too_below_threshold">A threshold in the number of pixels from reference image point(normally image center) specifying that we are too below of the funnypoint or not in the case, we are in the near vicinity of the funnypoint.</field>
         <field type="uint16_t" name="wing_too_above_threshold">A threshold in the number of pixels from reference image point(normally image center) specifying that we are too above of the funnypoint or not in the case, we are in the near vicinity of the funnypoint.</field>
+      </message>
+      <message id="199" name="TRACK_STATUS">
+        <description>This message is used for sending the visual tracks detected and tracked on the onboard computer to GCS for monitoring.</description>
+        <field type="uint32_t" name="time_stamp" units="ms">Time stamp for later synchronization of the tracks and displaying frames.</field>
+        <field type="uint16_t" name="track_id">Id of the track.</field>
+        <field type="uint32_t" name="frame_count">A counter for collecting the tracks belonging to the same frame. actually some sort of synchronization without the time stamp.</field>
+        <field type="uint8_t" name="track_state" enum="TRACK_STATE">A flag to demonstrate the state of the track. At the moment used just for lock and unlock states.</field>
+        <field type="float" name="top_left_x">normalized, [0, 1], top left x cooridinate of the bounding box.</field>
+        <field type="float" name="top_left_y">normalized, [0, 1], top left y cooridinate of the bounding box.</field>
+        <field type="float" name="bottom_right_x">normalized, [0, 1], bottom right x cooridinate of the bounding box.</field>
+        <field type="float" name="bottom_right_y">normalized, [0, 1], bottom right y cooridinate of the bounding box.</field>
       </message>
     </messages>
 
